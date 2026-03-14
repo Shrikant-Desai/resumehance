@@ -1,0 +1,37 @@
+Role: Senior Machine Learning Engineer
+Location: Hyderabad
+Experience: 5+ Years
+
+About the Role
+
+We are seeking a Senior Machine Learning Engineer to design, train, and deploy large-scale AI models for predictive analytics and recommendation systems.
+
+Responsibilities
+
+Design and train machine learning models
+
+Build scalable ML pipelines using TensorFlow or PyTorch
+
+Work with large-scale data processing frameworks
+
+Deploy ML models using Kubernetes and cloud platforms
+
+Optimize model performance and accuracy
+
+Required Skills
+
+5+ years experience in Machine Learning or AI
+
+Strong expertise in TensorFlow, PyTorch
+
+Experience with MLOps pipelines
+
+Knowledge of distributed computing frameworks (Spark, Hadoop)
+
+Strong background in statistics and deep learning
+
+Preferred Skills
+
+Experience with NLP or Computer Vision
+
+PhD or Masters in AI/ML/Data Science

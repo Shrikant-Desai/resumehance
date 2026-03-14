@@ -3,7 +3,6 @@ import json
 
 
 def analyze_job_posting(job_description_text):
-    # full_prompt = f"Extract all skills from this resume. Return a JSON object with keys: technical_skills (list), soft_skills (list), tools (list), certifications (list). Return only JSON, nothing else.\n\nUser: {resume_text}"
 
     full_prompt = f"""Analyze this job description and return ONLY a JSON object with this structure, no explanation:
     {{

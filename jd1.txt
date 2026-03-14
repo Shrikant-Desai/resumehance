@@ -1,0 +1,37 @@
+Role: Junior Full Stack Software Engineer
+Location: Remote / Bangalore
+Experience: 0–2 Years
+
+About the Role
+
+We are looking for an entry-level Full Stack Software Engineer to help build and maintain modern web applications. The ideal candidate has strong fundamentals in JavaScript and experience with React and Node.js.
+
+Responsibilities
+
+Develop responsive frontend interfaces using React.js, HTML, and CSS
+
+Build backend APIs using Node.js and Express.js
+
+Work with MongoDB to store and retrieve application data
+
+Integrate third-party APIs
+
+Write clean, maintainable, and testable code
+
+Collaborate with product and design teams
+
+Required Skills
+
+Strong knowledge of JavaScript
+
+Experience with React.js
+
+Basic backend development using Node.js
+
+Understanding of REST APIs
+
+Familiarity with MongoDB or other NoSQL databases
+
+Understanding of Git and version control
+
+Basic knowledge of Data Structures and Algorithms
