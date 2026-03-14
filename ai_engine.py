@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+# "gemini-2.5-flash-lite" | "gemini-3.1-flash-lite-preview"
 class AIEngine:
     """Wrapper around the Gemini generative AI client."""
 
