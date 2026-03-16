@@ -1,0 +1,55 @@
+# Python cache
+
+**pycache**/
+_.py[cod]
+_$py.class
+
+# Virtual environments
+
+venv/
+.venv/
+env/
+ENV/
+
+# Distribution / packaging
+
+build/
+dist/
+\*.egg-info/
+.eggs/
+
+# Logs
+
+\*.log
+
+# Unit test / coverage reports
+
+htmlcov/
+.coverage
+.coverage.\*
+.pytest_cache/
+
+# IDE files
+
+.vscode/
+.idea/
+
+# OS files
+
+.DS_Store
+Thumbs.db
+
+# Git
+
+.git/
+.gitignore
+
+# Docker files (optional)
+
+Dockerfile
+docker-compose.yml
+
+# Environment variables
+
+.env
+.env.\*
