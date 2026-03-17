@@ -9,7 +9,7 @@ from app.core.exceptions import (
 )
 from app.db import repositories
 from app.embeddings.embedder import embed_skills_batch
-from app.schemas.resume import ResumeUploadResponse, ParsedResume, ResumeSkills
+from app.schemas.resume import ResumeUploadResponse, ParsedResume, ResumeSkills, ResumeListItem, ResumeListResponse
 
 
 def _flatten_skills(skills: ResumeSkills) -> list[str]:
@@ -98,3 +98,26 @@ async def process_resume(file_bytes: bytes, file_name: str) -> ResumeUploadRespo
         parsed_data=parsed_resume,
         uploaded_at=resume_record.uploaded_at,
     )
+
+
+def list_resumes(skip: int = 0, limit: int = 20) -> ResumeListResponse:
+    total = repositories.count_resumes()
+    records = repositories.get_all_resumes(skip=skip, limit=limit)
+
+    items = []
+    for r in records:
+        pj = r.parsed_json or {}
+        personal_info = pj.get("personal_info", {})
+        items.append(
+            ResumeListItem(
+                resume_id=r.id,
+                file_name=r.file_name,
+                candidate_name=personal_info.get("name") if isinstance(personal_info, dict) else None,
+                resume_domain=pj.get("resume_domain"),
+                seniority_level=pj.get("seniority_level"),
+                total_experience_years=pj.get("total_experience_years", 0.0),
+                uploaded_at=r.uploaded_at,
+            )
+        )
+
+    return ResumeListResponse(total=total, skip=skip, limit=limit, items=items)

@@ -91,3 +91,10 @@ class AnalysisSummaryResponse(BaseModel):
     total_matched: int
     total_gaps: int
     created_at: datetime
+
+
+class AnalysisListResponse(BaseModel):
+    total: int
+    skip: int
+    limit: int
+    items: list[AnalysisSummaryResponse]

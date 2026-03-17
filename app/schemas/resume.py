@@ -69,3 +69,22 @@ class ResumeUploadResponse(BaseModel):
     file_name: str
     parsed_data: ParsedResume
     uploaded_at: datetime
+
+
+class ResumeListItem(BaseModel):
+    """Lightweight summary returned in list views — avoids sending full parsed_json."""
+
+    resume_id: int
+    file_name: str
+    candidate_name: Optional[str] = None  # from parsed_json.personal_info.name
+    resume_domain: Optional[str] = None
+    seniority_level: Optional[str] = None
+    total_experience_years: float = 0.0
+    uploaded_at: datetime
+
+
+class ResumeListResponse(BaseModel):
+    total: int
+    skip: int
+    limit: int
+    items: list[ResumeListItem]

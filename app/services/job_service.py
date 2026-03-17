@@ -2,7 +2,7 @@ from app.core import job_analyzer
 from app.core.exceptions import GeminiCallFailedException, EmbeddingFailedException
 from app.db import repositories
 from app.embeddings.embedder import embed_skills_batch
-from app.schemas.job import JobCreateRequest, JobCreateResponse, ParsedJob, JobSkills
+from app.schemas.job import JobCreateRequest, JobCreateResponse, ParsedJob, JobSkills, JobListItem, JobListResponse
 
 
 def _flatten_job_skills(required: JobSkills, good_to_have: JobSkills) -> list[str]:
@@ -92,3 +92,27 @@ async def process_job(request: JobCreateRequest) -> JobCreateResponse:
     return JobCreateResponse(
         jd_id=jd_record.id, parsed_data=parsed_job, created_at=jd_record.created_at
     )
+
+
+def list_jobs(skip: int = 0, limit: int = 20) -> JobListResponse:
+    total = repositories.count_jds()
+    records = repositories.get_all_jds(skip=skip, limit=limit)
+
+    items = []
+    for r in records:
+        pj = r.parsed_json or {}
+        exp = pj.get("experience_required", {})
+        minimum_years = exp.get("minimum_years", 0.0) if isinstance(exp, dict) else 0.0
+        items.append(
+            JobListItem(
+                jd_id=r.id,
+                job_title=r.job_title,
+                company=r.company,
+                domain=pj.get("domain"),
+                seniority_level=pj.get("seniority_level"),
+                minimum_years_required=minimum_years,
+                created_at=r.created_at,
+            )
+        )
+
+    return JobListResponse(total=total, skip=skip, limit=limit, items=items)

@@ -12,6 +12,7 @@ from app.schemas.analysis import (
     AnalysisRunRequest,
     AnalysisRunResponse,
     AnalysisSummaryResponse,
+    AnalysisListResponse,
     MatchResult,
     GapResult,
     SkillGapItem,
@@ -219,4 +220,51 @@ async def get_analysis_summary(analysis_id: int) -> AnalysisSummaryResponse:
         total_matched=len(match.matched_skills),
         total_gaps=len(gap.skill_gaps),
         created_at=record.created_at,
+    )
+
+
+def _record_to_summary(record) -> AnalysisSummaryResponse:
+    """Convert an Analysis DB record to AnalysisSummaryResponse."""
+    match = MatchResult(**record.result_json["match_result"])
+    gap = GapResult(**record.result_json["gap_result"])
+    return AnalysisSummaryResponse(
+        analysis_id=record.id,
+        resume_id=record.resume_id,
+        jd_id=record.jd_id,
+        readiness_score=record.readiness_score,
+        verdict=record.result_json["readiness_score"]["verdict"],
+        total_matched=len(match.matched_skills),
+        total_gaps=len(gap.skill_gaps),
+        created_at=record.created_at,
+    )
+
+
+def list_analyses(skip: int = 0, limit: int = 20) -> AnalysisListResponse:
+    total = repositories.count_analyses()
+    records = repositories.get_all_analyses(skip=skip, limit=limit)
+    return AnalysisListResponse(
+        total=total,
+        skip=skip,
+        limit=limit,
+        items=[_record_to_summary(r) for r in records],
+    )
+
+
+def list_analyses_by_resume(resume_id: int) -> AnalysisListResponse:
+    records = repositories.get_analyses_by_resume(resume_id)
+    return AnalysisListResponse(
+        total=len(records),
+        skip=0,
+        limit=len(records),
+        items=[_record_to_summary(r) for r in records],
+    )
+
+
+def list_analyses_by_jd(jd_id: int) -> AnalysisListResponse:
+    records = repositories.get_analyses_by_jd(jd_id)
+    return AnalysisListResponse(
+        total=len(records),
+        skip=0,
+        limit=len(records),
+        items=[_record_to_summary(r) for r in records],
     )

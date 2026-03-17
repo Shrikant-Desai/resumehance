@@ -20,6 +20,16 @@ def get_resume_by_id(resume_id: int) -> Resume | None:
         return db.get(Resume, resume_id)
 
 
+def get_all_resumes(skip: int = 0, limit: int = 20) -> list[Resume]:
+    with SessionLocal() as db:
+        return db.query(Resume).order_by(Resume.uploaded_at.desc()).offset(skip).limit(limit).all()
+
+
+def count_resumes() -> int:
+    with SessionLocal() as db:
+        return db.query(Resume).count()
+
+
 # --- Job Description ---
 
 
@@ -42,6 +52,22 @@ def save_jd(
 def get_jd_by_id(jd_id: int) -> JobDescription | None:
     with SessionLocal() as db:
         return db.get(JobDescription, jd_id)
+
+
+def get_all_jds(skip: int = 0, limit: int = 20) -> list[JobDescription]:
+    with SessionLocal() as db:
+        return (
+            db.query(JobDescription)
+            .order_by(JobDescription.created_at.desc())
+            .offset(skip)
+            .limit(limit)
+            .all()
+        )
+
+
+def count_jds() -> int:
+    with SessionLocal() as db:
+        return db.query(JobDescription).count()
 
 
 # --- Skill Vectors ---
@@ -121,4 +147,42 @@ def get_analysis_by_resume_and_jd(resume_id: int, jd_id: int) -> Analysis | None
             db.query(Analysis)
             .filter(Analysis.resume_id == resume_id, Analysis.jd_id == jd_id)
             .first()
+        )
+
+
+def get_all_analyses(skip: int = 0, limit: int = 20) -> list[Analysis]:
+    with SessionLocal() as db:
+        return (
+            db.query(Analysis)
+            .order_by(Analysis.created_at.desc())
+            .offset(skip)
+            .limit(limit)
+            .all()
+        )
+
+
+def count_analyses() -> int:
+    with SessionLocal() as db:
+        return db.query(Analysis).count()
+
+
+def get_analyses_by_resume(resume_id: int) -> list[Analysis]:
+    """All analyses that used a given resume — useful for resume detail views."""
+    with SessionLocal() as db:
+        return (
+            db.query(Analysis)
+            .filter(Analysis.resume_id == resume_id)
+            .order_by(Analysis.created_at.desc())
+            .all()
+        )
+
+
+def get_analyses_by_jd(jd_id: int) -> list[Analysis]:
+    """All analyses that used a given JD — useful for JD detail views."""
+    with SessionLocal() as db:
+        return (
+            db.query(Analysis)
+            .filter(Analysis.jd_id == jd_id)
+            .order_by(Analysis.created_at.desc())
+            .all()
         )

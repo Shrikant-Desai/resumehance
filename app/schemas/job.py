@@ -53,3 +53,22 @@ class JobCreateResponse(BaseModel):
     jd_id: int
     parsed_data: ParsedJob
     created_at: datetime
+
+
+class JobListItem(BaseModel):
+    """Lightweight summary returned in list views."""
+
+    jd_id: int
+    job_title: Optional[str] = None
+    company: Optional[str] = None
+    domain: Optional[str] = None
+    seniority_level: Optional[str] = None
+    minimum_years_required: float = 0.0
+    created_at: datetime
+
+
+class JobListResponse(BaseModel):
+    total: int
+    skip: int
+    limit: int
+    items: list[JobListItem]

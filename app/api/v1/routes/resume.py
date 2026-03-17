@@ -1,6 +1,6 @@
-from fastapi import APIRouter, UploadFile, File, HTTPException
+from fastapi import APIRouter, UploadFile, File, HTTPException, Query
 from app.services import resume_service
-from app.schemas.resume import ResumeUploadResponse
+from app.schemas.resume import ResumeUploadResponse, ResumeListResponse
 from app.core.exceptions import (
     PDFParsingFailedException,
     GeminiCallFailedException,
@@ -32,5 +32,17 @@ async def upload_resume(file: UploadFile = File(...)):
         raise HTTPException(status_code=502, detail=e.message)
     except EmbeddingFailedException as e:
         raise HTTPException(status_code=502, detail=e.message)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
+
+
+@router.get("/", response_model=ResumeListResponse)
+def list_resumes(
+    skip: int = Query(default=0, ge=0, description="Number of records to skip"),
+    limit: int = Query(default=20, ge=1, le=100, description="Max records to return"),
+):
+    """List all uploaded resumes with lightweight summary info."""
+    try:
+        return resume_service.list_resumes(skip=skip, limit=limit)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
