@@ -77,3 +77,19 @@ docker-compose down
 # rebuild just the app after code changes
 
 docker-compose up --build app
+
+# 1 — start DB container first and wait for it to be healthy
+
+docker-compose up db -d
+
+# 2 — verify DB is ready
+
+docker-compose exec db psql -U resume_user -d resume_analyzer -c "\l"
+
+# 3 — start app container
+
+docker-compose up app -d
+
+# 4 — now run migrations
+
+docker-compose exec app alembic upgrade head
