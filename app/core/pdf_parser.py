@@ -11,12 +11,3 @@ def extract_pdf_text(file_path):
                 full_text += page_text + "\n"
 
     return full_text
-
-
-def extract_txt_text(file_path):
-    full_text = ""
-
-    with open(file_path, "r") as f:
-        full_text = f.read()
-
-    return full_text

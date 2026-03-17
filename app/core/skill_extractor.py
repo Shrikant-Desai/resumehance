@@ -2,7 +2,7 @@ from ai_engine import AIEngine
 import json
 
 
-def extract_skills_from_resume(resume_text):
+def extract(resume_text):
     # full_prompt = f"Extract all skills from this resume. Return a JSON object with keys: technical_skills (list), soft_skills (list), tools (list), certifications (list). Return only JSON, nothing else.\n\nUser: {resume_text}"
 
     full_prompt = f"""Extract information from this resume and return ONLY a JSON object with this structure, no explanation:

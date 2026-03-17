@@ -2,7 +2,7 @@ from ai_engine import AIEngine
 import json
 
 
-def analyze_job_posting(job_description_text):
+def analyze(job_description_text):
 
     full_prompt = f"""Analyze this job description and return ONLY a JSON object with this structure, no explanation:
     {{

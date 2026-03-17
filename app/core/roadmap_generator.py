@@ -2,7 +2,7 @@ from ai_engine import AIEngine
 import json
 
 
-def generate_roadmap(
+def generate(
     target_role,
     seniority_level,
     missing_skills,

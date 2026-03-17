@@ -1,4 +1,4 @@
-def calculate_job_readiness_score(extracted_skills, required_skills, skills_match):
+def calculate_score(extracted_skills, required_skills, skills_match):
 
     weights = {
         "critical": 40,
