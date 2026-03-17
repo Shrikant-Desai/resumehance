@@ -15,7 +15,8 @@ def embed_skill(skill_name: str) -> list[float]:
             task_type="SEMANTIC_SIMILARITY"
         ),  # important — tells model what embeddings are used for
     )
-    return response.embeddings
+    # response.embeddings is a list of Embedding objects; .values is the list[float]
+    return response.embeddings[0].values
 
 
 def embed_skills_batch(skills: list[str]) -> dict[str, list[float]]:

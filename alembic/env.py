@@ -70,6 +70,11 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
+        # enable pgvector extension before any migration uses the vector type
+        from sqlalchemy import text
+        connection.execute(text("CREATE EXTENSION IF NOT EXISTS vector"))
+        connection.commit()
+
         context.configure(connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
