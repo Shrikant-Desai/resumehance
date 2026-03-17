@@ -1,18 +1,21 @@
-import google as genai
+from google import genai
+from google.genai import types
 from app.config import settings
 
-genai.configure(api_key=settings.GEMINI_API_KEY)
+client = genai.Client(api_key=settings.GEMINI_API_KEY)
 
 EMBEDDING_MODEL = "gemini-embedding-2-preview"
 
 
 def embed_skill(skill_name: str) -> list[float]:
-    response = genai.embed_content(
+    response = client.models.embed_content(
         model=EMBEDDING_MODEL,
         content=skill_name,
-        task_type="semantic_similarity",  # important — tells model what embeddings are used for
+        config=types.EmbedContentConfig(
+            task_type="SEMANTIC_SIMILARITY"
+        ),  # important — tells model what embeddings are used for
     )
-    return response["embedding"]
+    return response.embeddings
 
 
 def embed_skills_batch(skills: list[str]) -> dict[str, list[float]]:

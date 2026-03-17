@@ -1,4 +1,4 @@
-from ai_engine import AIEngine
+from app.core.ai_engine import AIEngine
 import json
 
 
