@@ -9,7 +9,13 @@ from app.core.exceptions import (
 )
 from app.db import repositories
 from app.embeddings.embedder import embed_skills_batch
-from app.schemas.resume import ResumeUploadResponse, ParsedResume, ResumeSkills, ResumeListItem, ResumeListResponse
+from app.schemas.resume import (
+    ResumeUploadResponse,
+    ParsedResume,
+    ResumeSkills,
+    ResumeListItem,
+    ResumeListResponse,
+)
 
 
 def _flatten_skills(skills: ResumeSkills) -> list[str]:
@@ -80,6 +86,10 @@ async def process_resume(file_bytes: bytes, file_name: str) -> ResumeUploadRespo
     except Exception as e:
         raise EmbeddingFailedException(skill="batch", reason=str(e))
 
+    print(
+        f"Embedding complete for resume {resume_record.id} >>>>>>>>>. {skill_vectors}"
+    )
+
     # step 6 — save each skill vector to DB
     for skill_name, vector in skill_vectors.items():
         try:
@@ -112,7 +122,11 @@ def list_resumes(skip: int = 0, limit: int = 20) -> ResumeListResponse:
             ResumeListItem(
                 resume_id=r.id,
                 file_name=r.file_name,
-                candidate_name=personal_info.get("name") if isinstance(personal_info, dict) else None,
+                candidate_name=(
+                    personal_info.get("name")
+                    if isinstance(personal_info, dict)
+                    else None
+                ),
                 resume_domain=pj.get("resume_domain"),
                 seniority_level=pj.get("seniority_level"),
                 total_experience_years=pj.get("total_experience_years", 0.0),

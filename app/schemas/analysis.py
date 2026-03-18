@@ -79,7 +79,7 @@ class AnalysisRunResponse(BaseModel):
     gap_result: GapResult
     readiness_score: ReadinessScore
     roadmap: Roadmap
-    created_at: datetime
+    created_at: Optional[datetime] = None
 
 
 class AnalysisSummaryResponse(BaseModel):

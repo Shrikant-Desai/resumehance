@@ -22,7 +22,13 @@ def get_resume_by_id(resume_id: int) -> Resume | None:
 
 def get_all_resumes(skip: int = 0, limit: int = 20) -> list[Resume]:
     with SessionLocal() as db:
-        return db.query(Resume).order_by(Resume.uploaded_at.desc()).offset(skip).limit(limit).all()
+        return (
+            db.query(Resume)
+            .order_by(Resume.uploaded_at.desc())
+            .offset(skip)
+            .limit(limit)
+            .all()
+        )
 
 
 def count_resumes() -> int:
@@ -134,6 +140,14 @@ def save_analysis(
         db.commit()
         db.refresh(record)
         return record
+
+
+def update_analysis_result_json(analysis_id: int, result_json: dict) -> None:
+    with SessionLocal() as db:
+        record = db.get(Analysis, analysis_id)
+        if record:
+            record.result_json = result_json
+            db.commit()
 
 
 def get_analysis_by_id(analysis_id: int) -> Analysis | None:

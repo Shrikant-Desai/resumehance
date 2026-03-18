@@ -167,19 +167,7 @@ async def run_analysis(request: AnalysisRunRequest) -> AnalysisRunResponse:
     except Exception as e:
         raise GeminiCallFailedException(step="roadmap_generation", reason=str(e))
 
-    # step 10 — build final response
-    response = AnalysisRunResponse(
-        analysis_id=0,  # will be updated after save
-        resume_id=request.resume_id,
-        jd_id=request.jd_id,
-        match_result=match_result,
-        gap_result=gap_result,
-        readiness_score=readiness_score,
-        roadmap=roadmap,
-        created_at=None,  # will be updated after save
-    )
-
-    # step 11 — save to DB
+    # step 10 — save to DB first to get the generated id and created_at
     analysis_record = repositories.save_analysis(
         resume_id=request.resume_id,
         jd_id=request.jd_id,
@@ -187,11 +175,26 @@ async def run_analysis(request: AnalysisRunRequest) -> AnalysisRunResponse:
         gap_result=gap_result.model_dump(),
         score=readiness_score.score,
         roadmap=roadmap.model_dump(),
-        result_json=response.model_dump(),
+        result_json={},  # placeholder; updated below
     )
 
-    response.analysis_id = analysis_record.id
-    response.created_at = analysis_record.created_at
+    # step 11 — build the final response with real id and created_at
+    response = AnalysisRunResponse(
+        analysis_id=analysis_record.id,
+        resume_id=request.resume_id,
+        jd_id=request.jd_id,
+        match_result=match_result,
+        gap_result=gap_result,
+        readiness_score=readiness_score,
+        roadmap=roadmap,
+        created_at=analysis_record.created_at,
+    )
+
+    # step 12 — persist the fully-populated result_json
+    repositories.update_analysis_result_json(
+        analysis_id=analysis_record.id,
+        result_json=response.model_dump(mode="json"),
+    )
 
     return response
 

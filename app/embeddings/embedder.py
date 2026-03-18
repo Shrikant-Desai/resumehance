@@ -10,9 +10,9 @@ EMBEDDING_MODEL = "gemini-embedding-2-preview"
 def embed_skill(skill_name: str) -> list[float]:
     response = client.models.embed_content(
         model=EMBEDDING_MODEL,
-        content=skill_name,
+        contents=skill_name,
         config=types.EmbedContentConfig(
-            task_type="SEMANTIC_SIMILARITY"
+            task_type="SEMANTIC_SIMILARITY", output_dimensionality=768
         ),  # important — tells model what embeddings are used for
     )
     # response.embeddings is a list of Embedding objects; .values is the list[float]
