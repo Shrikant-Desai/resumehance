@@ -7,7 +7,9 @@ from app.core.exceptions import (
     EmbeddingFailedException,
 )
 
-router = APIRouter(prefix="/resume", tags=["Resume"])
+router = APIRouter(
+    prefix="/resume",
+)
 
 
 @router.post("/upload", response_model=ResumeUploadResponse)

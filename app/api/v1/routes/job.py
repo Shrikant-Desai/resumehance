@@ -3,7 +3,9 @@ from app.services import job_service
 from app.schemas.job import JobCreateRequest, JobCreateResponse, JobListResponse
 from app.core.exceptions import GeminiCallFailedException, EmbeddingFailedException
 
-router = APIRouter(prefix="/job", tags=["Job Description"])
+router = APIRouter(
+    prefix="/job",
+)
 
 
 @router.post("/create", response_model=JobCreateResponse)

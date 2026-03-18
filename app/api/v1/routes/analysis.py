@@ -13,7 +13,7 @@ from app.core.exceptions import (
     GeminiCallFailedException,
 )
 
-router = APIRouter(prefix="/analysis", tags=["Analysis"])
+router = APIRouter(prefix="/analysis")
 
 
 @router.post("/run", response_model=AnalysisRunResponse)
